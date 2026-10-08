@@ -78,7 +78,7 @@ public class Alumno {
 
     @Override
     public String toString() {
-        return "--Alumno--" 
+        return "\n--Alumno--" 
                 + "\nid: " + id + ", "
                 + "\ndni: " + dni + ","
                 + "\napellido: " + apellido + ", "

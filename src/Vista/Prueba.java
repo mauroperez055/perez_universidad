@@ -13,17 +13,20 @@ public class Prueba {
     public static void main(String[] args) {
         
         LocalDate fecha = LocalDate.now();
-        Alumno alumnoNuevo = new Alumno(35353535, "Scaloni", "Leonel", fecha, true);
+        Alumno alumnoNuevo = new Alumno(12345, "Messi", "Lionel", fecha, false);
         new Prueba().conectar(alumnoNuevo);
     }
     
     public void conectar(Alumno alumnoNuevo) {
     conection = new Conexion("jdbc:mysql://localhost/perezmauro_universidad", "root", "");
         alumnoData = new AlumnoData(conection);
-//        alumnoData.agregarAlumno(alu);
+//        alumnoData.agregarAlumno(alumnoNuevo);
+        for (Alumno alu : alumnoData.listarAlumnos()) {
+            System.out.println(alu.toString());
+        }
 //        alumnoData.listarAlumnos();
-        Alumno alumno = alumnoData.buscarAlumno(7);
-        System.out.println(alumno.toString());
-//        alumnoData.actualizarAlumno(alumno, alumnoNuevo);
+//        Alumno alumno = alumnoData.buscarAlumno(4);
+//        System.out.println(alumno.toString());
+//        alumnoData.actualizarAlumno(alumno);
     }
 }
