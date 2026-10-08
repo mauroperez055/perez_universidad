@@ -20,7 +20,7 @@ public class Alumno {
     }
     
     public Alumno(int id, int dni, String apellido, String nombre, LocalDate fechaNac, boolean activo) {
-        this.id = -1;
+        this.id = id;
         this.dni = dni;
         this.apellido = apellido;
         this.nombre = nombre;
@@ -78,8 +78,13 @@ public class Alumno {
 
     @Override
     public String toString() {
-        return id + "-" + apellido + " "+ nombre;
+        return "--Alumno--" 
+                + "\nid: " + id + ", "
+                + "\ndni: " + dni + ","
+                + "\napellido: " + apellido + ", "
+                + "\nnombre: " + nombre + ", "
+                + "\nfechaNac: " + fechaNac + ", "
+                + "\nactivo: " + activo;
     }
-    
     
 }

@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Date;
 import entidades.Alumno;
+import java.time.LocalDate;
 
 public class AlumnoData {
      private Connection conection = null;
@@ -31,7 +32,7 @@ public class AlumnoData {
             ResultSet rs = ps.getGeneratedKeys();
             
             if (rs.next()) {
-                System.out.println("Id asignado al alumno: " + rs.getInt(1));
+                System.out.println(rs.getInt(1));
             }
             
             System.out.println("Alumno creado");
@@ -42,7 +43,7 @@ public class AlumnoData {
         }
     }
     
-    public void buscarAlumnos() {
+    public void listarAlumnos() {
         
         String sql = "SELECT * FROM alumno";
         
@@ -65,7 +66,7 @@ public class AlumnoData {
         }
     }
     
-    public void buscarAlumno(int id) {
+    public Alumno buscarAlumno(int id) {
         String sql = "SELECT * FROM alumno WHERE idAlumno = ?";
         
         try {
@@ -75,16 +76,52 @@ public class AlumnoData {
             ResultSet rs = ps.executeQuery();
             
            while (rs.next()) {
-                System.out.println("id: " + rs.getInt("idAlumno"));
-                System.out.println("Apellido: " + rs.getString("apellido"));
-                System.out.println("Nombre: " + rs.getString("nombre"));
-                System.out.println("Fecha Nac.: " + rs.getDate("fechaNac"));
-                System.out.println("Activo?: " + rs.getBoolean("activo"));
+                id = rs.getInt("idAlumno");
+                int dni = rs.getInt("dni");
+                String apellido = rs.getString("apellido");
+                String nombre = rs.getString("nombre");
+                LocalDate fechaNac = (rs.getDate("fechaNac")).toLocalDate();
+                boolean activo = rs.getBoolean("activo");
+                
+                Alumno alu = new Alumno(id, dni, apellido, nombre, fechaNac, activo);
+                return alu;
            }
            
            ps.close();
         } catch (SQLException e) {
             System.out.println("No se pudo encontrar el alumno.");
+        }
+        return null;
+    }
+    
+    public void actualizarAlumno(Alumno alumno, Alumno alumnoNuevo) {
+        String sql = "UPDATE alumno SET dni = ?, apellido = ?, nombre = ?, fechaNac = ?, activo = ? WHERE idAlumno = ?";
+        
+        try {
+            PreparedStatement ps = conection.prepareStatement(sql);
+            
+            ps.setInt(1, alumnoNuevo.getDni());
+            ps.setString(2, alumnoNuevo.getApellido());
+            ps.setString(3, alumnoNuevo.getNombre());
+            ps.setDate(4, Date.valueOf(alumnoNuevo.getFechaNac()));
+            ps.setBoolean(5, alumnoNuevo.isActivo());
+            ps.setInt(6, alumno.getId());
+            ps.executeUpdate();
+            
+//            ResultSet rs = ps.getResultSet();
+//            
+//            while (rs.next()) {
+//                System.out.println("id: " + rs.getInt("idAlumno"));
+//                System.out.println("Apellido: " + rs.getString("apellido"));
+//                System.out.println("Nombre: " + rs.getString("nombre"));
+//                System.out.println("Fecha Nac.: " + rs.getDate("fechaNac"));
+//                System.out.println("Activo?: " + rs.getBoolean("activo"));
+//           }
+            
+            ps.close();
+            
+        } catch (SQLException e) {
+            System.out.println("No se pudo actualizar el alumno. " + e.getMessage());
         }
     }
 }
