@@ -1,15 +1,18 @@
 
-package entidades;
+package modelo;
 
 import java.time.LocalDate;
 
 public class Alumno {
-    private int id = -1;
+    private int idAlumno;
     private int dni;
     private String apellido;
     private String nombre;
     private LocalDate fechaNac;
     private boolean activo;
+
+    public Alumno() {
+    }   
 
     public Alumno(int dni, String apellido, String nombre, LocalDate fechaNac, boolean activo) {
         this.dni = dni;
@@ -19,8 +22,8 @@ public class Alumno {
         this.activo = activo;
     }
     
-    public Alumno(int id, int dni, String apellido, String nombre, LocalDate fechaNac, boolean activo) {
-        this.id = id;
+    public Alumno(int idAlumno, int dni, String apellido, String nombre, LocalDate fechaNac, boolean activo) {
+        this.idAlumno = idAlumno;
         this.dni = dni;
         this.apellido = apellido;
         this.nombre = nombre;
@@ -28,12 +31,12 @@ public class Alumno {
         this.activo = activo;
     }
 
-    public int getId() {
-        return id;
+    public int getIdAlumno() {
+        return idAlumno;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setId(int idAlumno) {
+        this.idAlumno = idAlumno;
     }
 
     public int getDni() {
@@ -79,7 +82,7 @@ public class Alumno {
     @Override
     public String toString() {
         return "\n--Alumno--" 
-                + "\nid: " + id + ", "
+                + "\nid: " + idAlumno + ", "
                 + "\ndni: " + dni + ","
                 + "\napellido: " + apellido + ", "
                 + "\nnombre: " + nombre + ", "

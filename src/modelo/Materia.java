@@ -1,28 +1,31 @@
 
-package entidades;
+package modelo;
 
 public class Materia {
-    private int id = -1;
+    private int idMateria;
     private String nombre;
     private boolean activo;
+
+    public Materia() {
+    }
 
     public Materia(String nombre, boolean activo) {
         this.nombre = nombre;
         this.activo = activo;
     }
     
-    public Materia(int id, String nombre, boolean activo) {
-        this.id = -1;
+    public Materia(int idMateria, String nombre, boolean activo) {
+        this.idMateria = idMateria;
         this.nombre = nombre;
         this.activo = activo;
     }
 
-    public int getId() {
-        return id;
+    public int getIdMateria() {
+        return idMateria;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setId(int idMateria) {
+        this.idMateria = idMateria;
     }
 
     public String getNombre() {
@@ -43,8 +46,10 @@ public class Materia {
 
     @Override
     public String toString() {
-        return id + " - " + nombre;
+        return "\n--Materia--" 
+                + "\nidMateria: " + idMateria + ", "
+                + "\nnombre: " + nombre + ", "
+                + "\nactivo: " + activo;
     }
-    
-    
+  
 }
