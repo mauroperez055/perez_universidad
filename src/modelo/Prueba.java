@@ -15,7 +15,7 @@ public class Prueba {
     public static void main(String[] args) {
         
         LocalDate fecha = LocalDate.now();
-        Alumno alumnoNuevo = new Alumno(132545, "Fernandez", "Enzo", fecha, true);
+        Alumno alumnoNuevo = new Alumno(38749011, "Fernandez", "Enzo", fecha, true);
         Materia materiaNueva = new Materia("Ingles 2", false);
         new Prueba().conectar(alumnoNuevo);
         new Prueba().conectar(materiaNueva);
@@ -28,7 +28,7 @@ public class Prueba {
         Alumno alumnoNuevo = (Alumno) objeto;
         alumnoData = new AlumnoData(conection);
         /*agrego un alumno nuevo*/
-//        alumnoData.agregarAlumno(alumnoNuevo);
+        alumnoData.agregarAlumno(alumnoNuevo);
 
         /*listo todos los alumnos, activos e inactivos*/
 //        for (Alumno alu : alumnoData.listarAlumnos()) {
