@@ -57,7 +57,7 @@ public class Prueba {
 //        alumnoData.actualizarAlumno(alumno);
 
         /*elimino un alumno de manera logica*/
-//        alumnoData.eliminarLogico(alumno);
+//        alumnoData.bajaLogico(alumno);
     }
     
         if (objeto instanceof Materia) {

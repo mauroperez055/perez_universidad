@@ -1,14 +1,20 @@
 
 package vista;
 
+import com.toedter.calendar.JDateChooser;
 import control.AlumnoData;
 import control.Conexion;
 import java.awt.Component;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
+import modelo.Alumno;
 
 public class VistaPrincipal extends javax.swing.JFrame {
     
@@ -19,7 +25,7 @@ public class VistaPrincipal extends javax.swing.JFrame {
     public VistaPrincipal() {
         initComponents();
         conexion = new Conexion("jdbc:mysql://localhost/perezmauro_universidad", "root", "");
-        AlumnoData alumnoData = new AlumnoData(conexion);
+        alumnoData = new AlumnoData(conexion);
     }
 
     @SuppressWarnings("unchecked")
@@ -68,7 +74,7 @@ public class VistaPrincipal extends javax.swing.JFrame {
 
         jMenu2.setText("Alumno");
 
-        mnuCargarAlumno.setText("Cargar Alumno");
+        mnuCargarAlumno.setText("Gestión de Alumno");
         mnuCargarAlumno.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 mnuCargarAlumnoActionPerformed(evt);
@@ -86,7 +92,7 @@ public class VistaPrincipal extends javax.swing.JFrame {
 
         jMenu3.setText("Materia");
 
-        mnuCargarMateria.setText("Cargar Materia");
+        mnuCargarMateria.setText("Gestión de Materia");
         jMenu3.add(mnuCargarMateria);
 
         mnuCargarNota.setText("Cargar Nota ");
@@ -97,6 +103,11 @@ public class VistaPrincipal extends javax.swing.JFrame {
         jMenu4.setText("Consultas");
 
         mnuListarAlu.setText("Listar Alumnos ");
+        mnuListarAlu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuListarAluActionPerformed(evt);
+            }
+        });
         jMenu4.add(mnuListarAlu);
 
         mnuListarMat.setText("Listar Materias");
@@ -130,15 +141,27 @@ public class VistaPrincipal extends javax.swing.JFrame {
         // TODO add your handling code here:
         escritorio.removeAll();
         escritorio.repaint();
-        VistaAlumno alu = new VistaAlumno(alumnoData);
-        alu.setVisible(true);
-        escritorio.add(alu);
-        alu.moveToFront();
+        VistaAlumno formAlumno = new VistaAlumno(alumnoData);
+        formAlumno.setVisible(true);
+        escritorio.add(formAlumno);
+        formAlumno.moveToFront();
     }//GEN-LAST:event_mnuCargarAlumnoActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
+    private void mnuListarAluActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuListarAluActionPerformed
+        try {
+            // TODO add your handling code here:
+            escritorio.removeAll();
+            escritorio.repaint();
+            VistaListarAlumnos listarAlumnos = new VistaListarAlumnos(alumnoData);
+            listarAlumnos.setVisible(true);
+            escritorio.add(listarAlumnos);
+            listarAlumnos.moveToFront();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "No se pudieron cargar los alumnos.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+    }//GEN-LAST:event_mnuListarAluActionPerformed
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -188,32 +211,32 @@ public class VistaPrincipal extends javax.swing.JFrame {
 //        }
     }
     
-//    public static boolean validarCamposVacios(JPanel jPanel, JTextField txtPrecio) {
-//        
-//        for (int i = 0; i < jPanel.getComponents().length; i++) {
-//            
-//            if (jPanel.getComponents()[i] instanceof JTextField) {
-//                JTextField caja = (JTextField) jPanel.getComponents()[i];
-//                if (caja.getText().trim().isEmpty()) {
-//                    JOptionPane.showMessageDialog(null, "Debe completar todos los campos.", "Atención!", JOptionPane.WARNING_MESSAGE);
-//                    return false;
-//                }
-//                
+    public static boolean validarCamposVacios(JPanel jPanel) {
+        
+        for (int i = 0; i < jPanel.getComponents().length; i++) {
+            
+            if (jPanel.getComponents()[i] instanceof JTextField) {
+                JTextField caja = (JTextField) jPanel.getComponents()[i];
+                if (caja.getText().trim().isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Debe completar todos los campos.", "Atención!", JOptionPane.WARNING_MESSAGE);
+                    return false;
+                }
+                
 //                if (caja == txtPrecio && !validarPrecio(caja)) {
 //                    JOptionPane.showMessageDialog(null, "Debe ingresar un precio válido.", "Atención!", JOptionPane.ERROR_MESSAGE);
 //                    txtPrecio.setText("");
 //                    return false;
 //                }
-//            }
-//            
-//            if (jPanel.getComponents()[i] instanceof JComboBox) {
-//                JComboBox combo = (JComboBox) jPanel.getComponents()[i];
-//                if (combo.getSelectedItem() == null || !combo.isEnabled() || combo.getSelectedItem().toString().isEmpty()) {
-//                    JOptionPane.showMessageDialog(null, "Debe seleccionar una cateegoría.", "Atención!", JOptionPane.WARNING_MESSAGE);
-//                    return false;
-//                }
-//            }
-//            
+            }
+            
+            if (jPanel.getComponents()[i] instanceof JComboBox) {
+                JComboBox combo = (JComboBox) jPanel.getComponents()[i];
+                if (combo.getSelectedItem() == null || !combo.isEnabled() || combo.getSelectedItem().toString().isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Debe seleccionar una cateegoría.", "Atención!", JOptionPane.WARNING_MESSAGE);
+                    return false;
+                }
+            }
+            
 //            if (jPanel.getComponents()[i] instanceof JSpinner) {
 //                JSpinner spin = (JSpinner) jPanel.getComponents()[i];
 //                if ((int) spin.getValue() < 0) {
@@ -221,10 +244,65 @@ public class VistaPrincipal extends javax.swing.JFrame {
 //                    return false;
 //                }
 //            }
-//
-//        }
-//        return true;
-//    }
+
+        }
+        return true;
+    }
+    
+    public static void limpiarCampos(JPanel  jPanel, JTextField txtBuscar) {
+        JComboBox combo = null;
+        for (int i = 0; i < jPanel.getComponents().length; i++) {
+            if (jPanel.getComponents()[i] instanceof JTextField) {
+                JTextField caja = (JTextField) jPanel.getComponents()[i];
+                caja.setText("");
+            }
+            
+            if (jPanel.getComponents()[i] instanceof JCheckBox) {
+                JCheckBox check = (JCheckBox) jPanel.getComponents()[i];
+                check.setSelected(false);
+            }
+            
+            if (jPanel.getComponents()[i] instanceof JDateChooser) {
+                JDateChooser date = (JDateChooser) jPanel.getComponents()[i];
+                date.getDateEditor().setDate(null);
+            }
+            
+            txtBuscar.setText("");
+            
+//            if (jPanel.getComponents()[i] instanceof JSpinner) {
+//                JSpinner spinner = (JSpinner) jPanel.getComponents()[i];
+//                spinner.setValue(0);
+//            }
+            
+//            if (jPanel.getComponents()[i] instanceof JComboBox) {
+//                combo = (JComboBox) jPanel.getComponents()[i];
+//                combo.setSelectedIndex(-1);
+//            }
+        }
+    }
+    
+    public static void borraFilasTabla(DefaultTableModel modelo) {
+        int filas = modelo.getRowCount() -1;
+        for (int i = filas; i >= 0; i--) {
+            modelo.removeRow(i);
+        }
+    }
+    
+    public static void cargarTablaAlumnos(ArrayList<Alumno> alumnos, JTable jTable) {
+        DefaultTableModel modelo = (DefaultTableModel) jTable.getModel();
+        borraFilasTabla(modelo);
+        
+        for (Alumno alu : alumnos) {
+            modelo.addRow(new Object[] {
+                alu.getIdAlumno(),
+                alu.getDni(),
+                alu.getApellido(),
+                alu.getNombre(),
+                alu.isActivo()
+            });
+        }
+        
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDesktopPane escritorio;

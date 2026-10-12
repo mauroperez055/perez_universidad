@@ -17,7 +17,7 @@ public class AlumnoData {
         this.conection = conex.buscarConexion();
     }
      
-    public void agregarAlumno(Alumno alu) {
+    public void agregarAlumno(Alumno alu) throws SQLException{
         String sql = "INSERT INTO alumno (dni, apellido, nombre, fechaNac, activo) VALUES (?, ?, ?, ?, ?)";
         
         try {
@@ -42,10 +42,11 @@ public class AlumnoData {
             ps.close();
         } catch (SQLException e) {
             System.out.println("No se pudo insertar: " + e.getMessage());
+            throw e;
         }
     }
     
-    public ArrayList<Alumno> listarAlumnos() {
+    public ArrayList<Alumno> listarAlumnos() throws SQLException{
         ArrayList<Alumno> alumnos = new ArrayList<>();
 
         String sql = "SELECT * FROM alumno";
@@ -70,13 +71,13 @@ public class AlumnoData {
             ps.close();
             return alumnos;
         } catch (SQLException e) {
-            System.out.println("No se encontraron alumnos. " + e.getMessage());
+            System.out.println("No se pudieron cargar los alumnos. " + e.getMessage());
+            throw e;
         }
         
-        return null;
     }
     
-    public ArrayList<Alumno> listarActivos() {
+    public ArrayList<Alumno> listarActivos() throws SQLException{
         ArrayList<Alumno> alumnos = new ArrayList<>();
         String sql = "SELECT * FROM alumno WHERE activo = 1";
         
@@ -100,13 +101,13 @@ public class AlumnoData {
             ps.close();
             return alumnos;
         } catch (SQLException e) {
-            System.out.println("No se encontraron alumnos activos. " + e.getMessage());
+            System.out.println("No se pudieron cargar los alumnos activos. " + e.getMessage());
+            throw e;
         }
-        
-        return null;
+
     }
     
-    public ArrayList<Alumno> listarInactivos() {
+    public ArrayList<Alumno> listarInactivos() throws SQLException{
         ArrayList<Alumno> alumnos = new ArrayList<>();
         String sql = "SELECT * FROM alumno WHERE activo = 0";
         
@@ -131,12 +132,12 @@ public class AlumnoData {
             return alumnos;
         } catch (SQLException e) {
             System.out.println("No se encontraron alumnos inactivos. " + e.getMessage());
+            throw e;
         }
-        
-        return null;
+
     }
     
-    public Alumno buscarAlumno(int dni) {
+    public Alumno buscarAlumno(int dni) throws SQLException {
         String sql = "SELECT * FROM alumno WHERE dni = ?";
         
         try {
@@ -160,46 +161,13 @@ public class AlumnoData {
            ps.close();
         } catch (SQLException e) {
             System.out.println("No se pudo encontrar el alumno.");
+            throw e;
         }
         return null;
     }
     
-    public ArrayList<Alumno> buscarAlumnosApellido(String apellido) {
-        ArrayList<Alumno> alumnos = new ArrayList<>();
-        String sql = "SELECT * FROM alumno WHERE apellido LIKE ?";
-        
-        try {
-            
-            PreparedStatement ps = conection.prepareStatement(sql);
-            ps.setString(1, "%" + apellido.trim() + "%");
-            
-            ResultSet rs = ps.executeQuery();
-            
-            while (rs.next()) {
-                Alumno alu = new Alumno();
-                
-                alu.setId(rs.getInt("idAlumno"));
-                alu.setDni(rs.getInt("dni"));
-                alu.setApellido(rs.getString("apellido"));
-                alu.setNombre(rs.getString("nombre"));
-                alu.setFechaNac((rs.getDate("fechaNac")).toLocalDate());
-                alu.setActivo(rs.getBoolean("activo"));
-                
-                alumnos.add(alu);
-                
-           }
-           
-           ps.close();
-           
-           return alumnos;
-        } catch (SQLException e) {
-            System.out.println("No se encontraron alumnos con ese apellido.");
-        }
-        return null;
-    }
-    
-    public void actualizarAlumno(Alumno alumno) {
-        String sql = "UPDATE alumno SET dni = ?, apellido = ?, nombre = ?, fechaNac = ?, activo = ? WHERE dni = ?";
+    public void actualizarAlumno(Alumno alumno) throws SQLException{
+        String sql = "UPDATE alumno SET dni = ?, apellido = ?, nombre = ?, fechaNac = ? WHERE idAlumno = ?";
         
         try {
             PreparedStatement ps = conection.prepareStatement(sql);
@@ -208,8 +176,7 @@ public class AlumnoData {
             ps.setString(2, alumno.getApellido());
             ps.setString(3, alumno.getNombre());
             ps.setDate(4, Date.valueOf(alumno.getFechaNac()));
-            ps.setBoolean(5, alumno.isActivo());
-            ps.setInt(6, alumno.getDni());
+            ps.setInt(5, alumno.getIdAlumno());
             
             int exito = ps.executeUpdate();
             
@@ -222,16 +189,17 @@ public class AlumnoData {
             ps.close();
         } catch (SQLException e) {
             System.out.println("No se pudo actualizar el alumno. " + e.getMessage());
+            throw e;
         }
     }
     
     /* elimina de manera logica un alumno buscado por id */
-    public void eliminarLogico(int dni) {
-        String sql = "UPDATE alumno SET activo = 0 WHERE dni = ?";
+    public void bajaLogica(Alumno alumno) throws SQLException{
+        String sql = "UPDATE alumno SET activo = 0 WHERE idAlumno = ?";
         
         try {
             PreparedStatement ps = conection.prepareStatement(sql);
-            ps.setInt(1, dni);
+            ps.setInt(1, alumno.getIdAlumno());
             
             int exito = ps.executeUpdate();
             
@@ -244,16 +212,16 @@ public class AlumnoData {
             ps.close();
         } catch (SQLException e) {
             System.out.println("No se pudo desactivar el alumno. " + e.getMessage());
+            throw e;
         }
     }
     
-    /* elimina de manera logica un alumno buscado por apellido */
-    public void eliminarLogico(String apellido) {
-        String sql = "UPDATE alumno SET activo = 0 WHERE apellido LIKE ?";
+    public void altaLogica(Alumno alumno) throws SQLException{
+        String sql = "UPDATE alumno SET activo = 1 WHERE idAlumno = ?";
         
         try {
             PreparedStatement ps = conection.prepareStatement(sql);
-            ps.setString(1, "%" + apellido + "%");
+            ps.setInt(1, alumno.getIdAlumno());
             
             int exito = ps.executeUpdate();
             
@@ -266,6 +234,8 @@ public class AlumnoData {
             ps.close();
         } catch (SQLException e) {
             System.out.println("No se pudo desactivar el alumno. " + e.getMessage());
+            throw e;
         }
     }
+    
 }

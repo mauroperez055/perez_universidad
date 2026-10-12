@@ -23,7 +23,7 @@
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="mnuCargarAlumno">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Cargar Alumno"/>
+                <Property name="text" type="java.lang.String" value="Gesti&#xf3;n de Alumno"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuCargarAlumnoActionPerformed"/>
@@ -48,7 +48,7 @@
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="mnuCargarMateria">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Cargar Materia"/>
+                <Property name="text" type="java.lang.String" value="Gesti&#xf3;n de Materia"/>
               </Properties>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="mnuCargarNota">
@@ -67,6 +67,9 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Listar Alumnos "/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuListarAluActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="mnuListarMat">
               <Properties>
