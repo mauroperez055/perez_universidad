@@ -13,9 +13,13 @@ import javax.swing.JTextField;
 public class VistaPrincipal extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(VistaPrincipal.class.getName());
+    private AlumnoData alumnoData;
+    private Conexion conexion;
 
     public VistaPrincipal() {
         initComponents();
+        conexion = new Conexion("jdbc:mysql://localhost/perezmauro_universidad", "root", "");
+        AlumnoData alumnoData = new AlumnoData(conexion);
     }
 
     @SuppressWarnings("unchecked")
@@ -126,8 +130,6 @@ public class VistaPrincipal extends javax.swing.JFrame {
         // TODO add your handling code here:
         escritorio.removeAll();
         escritorio.repaint();
-        Conexion conexion = new Conexion("jdbc:mysql://localhost/perezmauro_universidad", "root", "");
-        AlumnoData alumnoData = new AlumnoData(conexion);
         VistaAlumno alu = new VistaAlumno(alumnoData);
         alu.setVisible(true);
         escritorio.add(alu);

@@ -28,7 +28,7 @@ public class Prueba {
         Alumno alumnoNuevo = (Alumno) objeto;
         alumnoData = new AlumnoData(conection);
         /*agrego un alumno nuevo*/
-        alumnoData.agregarAlumno(alumnoNuevo);
+//        alumnoData.agregarAlumno(alumnoNuevo);
 
         /*listo todos los alumnos, activos e inactivos*/
 //        for (Alumno alu : alumnoData.listarAlumnos()) {

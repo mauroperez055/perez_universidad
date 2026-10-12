@@ -19,7 +19,7 @@ public class AlumnoData {
      
     public void agregarAlumno(Alumno alu) {
         String sql = "INSERT INTO alumno (dni, apellido, nombre, fechaNac, activo) VALUES (?, ?, ?, ?, ?)";
-        System.out.println(alu.toString());
+        
         try {
             PreparedStatement ps = conection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             
