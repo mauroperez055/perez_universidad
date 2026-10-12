@@ -1,6 +1,8 @@
 
 package vista;
 
+import control.AlumnoData;
+import control.Conexion;
 import java.awt.Component;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -124,7 +126,9 @@ public class VistaPrincipal extends javax.swing.JFrame {
         // TODO add your handling code here:
         escritorio.removeAll();
         escritorio.repaint();
-        VistaAlumno alu = new VistaAlumno();
+        Conexion conexion = new Conexion("jdbc:mysql://localhost/perezmauro_universidad", "root", "");
+        AlumnoData alumnoData = new AlumnoData(conexion);
+        VistaAlumno alu = new VistaAlumno(alumnoData);
         alu.setVisible(true);
         escritorio.add(alu);
         alu.moveToFront();

@@ -12,8 +12,9 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
 
     private AlumnoData alumnoData;
 
-    public VistaAlumno() {
+    public VistaAlumno(AlumnoData alumnoData) {
         initComponents();
+        this.alumnoData = alumnoData;
         dcFechaNac.getDateEditor().setEnabled(false);
     }
 
@@ -211,7 +212,7 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         // TODO add your handling code here:
         try {
-            int dni = Integer.parseInt(txtDni.getText().trim());
+            int dni = Integer.parseInt(txtDni.getText());
             String nombre = txtNombre.getText().trim();
             String apellido = txtApellido.getText().trim();
             
@@ -233,6 +234,8 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
             alumnoData.agregarAlumno(alumnoNuevo);
             
         } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error al guardar el alumno: ");
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
 
