@@ -1,35 +1,34 @@
 
 package modelo;
 
+import java.time.Year;
+
 public class Cursada {
     private int idCursada;
     private Alumno alumno;
     private Materia materia;
     private double nota;
-    private int anio; // año lectivo, en BD es Year
     private int asist;
-    private boolean activo;
+    private Year anio; // año lectivo, en BD es Year
 
     public Cursada() {
     }
 
-    public Cursada(int idCursada, Alumno alumno, Materia materia, double nota, int anio, int asist, boolean activo) {
+    public Cursada(int idCursada, Alumno alumno, Materia materia, double nota, int asist) {
         this.idCursada = idCursada;
         this.alumno = alumno;
         this.materia = materia;
         this.nota = nota;
-        this.anio = anio;
         this.asist = asist;
-        this.activo = activo;
+        this.anio = anio = Year.now();
     }
     
-    public Cursada(Alumno alumno, Materia materia, double nota, int anio, int asist, boolean activo) {
+    public Cursada(Alumno alumno, Materia materia, double nota, int asist) {
         this.alumno = alumno;
         this.materia = materia;
         this.nota = nota;
-        this.anio = anio;
         this.asist = asist;
-        this.activo = activo;
+        this.anio = anio = Year.now();
     }
 
     public int getIdCursada() {
@@ -64,28 +63,12 @@ public class Cursada {
         this.nota = nota;
     }
 
-    public int getAnio() {
-        return anio;
-    }
-
-    public void setAnio(int anio) {
-        this.anio = anio;
-    }
-
     public int getAsist() {
         return asist;
     }
 
     public void setAsist(int asist) {
         this.asist = asist;
-    }
-
-    public boolean isActivo() {
-        return activo;
-    }
-
-    public void setActivo(boolean activo) {
-        this.activo = activo;
     }
 
     @Override
@@ -95,9 +78,8 @@ public class Cursada {
                 + ",\n alumno: " + alumno 
                 + ",\n materia=" + materia 
                 + ",\n nota: " + nota 
-                + ",\n anio: " + anio 
-                + ",\n asist: " + asist 
-                + ",\n activo=" + activo;
+                + ",\n asist: " + asist
+                + ",\n anio: " + anio;
     }
     
     

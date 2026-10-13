@@ -5,23 +5,29 @@ import modelo.Alumno;
 import java.time.LocalDate;
 import control.AlumnoData;
 import control.Conexion;
+import control.CursadaData;
 import control.MateriaData;
+import java.sql.SQLException;
 
 public class Prueba {
     private AlumnoData alumnoData;
     private MateriaData materiaData;
+    private CursadaData cursadaData;
     private Conexion conection;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
         
         LocalDate fecha = LocalDate.now();
-        Alumno alumnoNuevo = new Alumno(38749011, "Fernandez", "Enzo", fecha, true);
-        Materia materiaNueva = new Materia("Ingles 2", false);
+        Alumno alumnoNuevo = new Alumno(4, 123456, "Messi", "Lionel Andrés", fecha, true);
+        Materia materiaNueva = new Materia(8, "Ingles 1", false);
+        Cursada cursadaNueva = new Cursada(alumnoNuevo, materiaNueva, 0, 0);
+        
         new Prueba().conectar(alumnoNuevo);
         new Prueba().conectar(materiaNueva);
+        new Prueba().conectar(cursadaNueva);
     }
     
-    public void conectar(Object objeto) {
+    public void conectar(Object objeto) throws SQLException {
         conection = new Conexion("jdbc:mysql://localhost/perezmauro_universidad", "root", "");
     
         if (objeto instanceof Alumno) {
@@ -88,5 +94,11 @@ public class Prueba {
 //            materiaData.eliminarMateriaLogico(3);
         }
         
+        if (objeto instanceof Cursada) {
+            Cursada cursadaNueva = (Cursada) objeto;
+            cursadaData = new CursadaData(conection);
+            
+            cursadaData.inscribirAlumno(cursadaNueva);
+        }
     }
 }
