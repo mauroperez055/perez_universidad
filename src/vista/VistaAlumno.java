@@ -47,7 +47,7 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
         btnBuscar = new javax.swing.JButton();
         txtBuscar = new javax.swing.JTextField();
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel1.setText("Formulario Alumno");
 
         pnlDatos.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -207,7 +207,7 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
                         .addGap(61, 61, 61)
                         .addComponent(pnlDatos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(204, 204, 204)
+                        .addGap(170, 170, 170)
                         .addComponent(jLabel1)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -289,6 +289,13 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         // TODO add your handling code here:
+        
+        if (txtBuscar.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Debe ingresar el dni del alumno.", "Atención", JOptionPane.WARNING_MESSAGE);
+            VistaPrincipal.limpiarCampos(pnlDatos, txtBuscar);
+            return;
+        }
+        
         try {
             
             int dni = Integer.parseInt(txtBuscar.getText());

@@ -4,6 +4,7 @@ package vista;
 import com.toedter.calendar.JDateChooser;
 import control.AlumnoData;
 import control.Conexion;
+import control.MateriaData;
 import java.awt.Component;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -15,17 +16,20 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import modelo.Alumno;
+import modelo.Materia;
 
 public class VistaPrincipal extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(VistaPrincipal.class.getName());
     private AlumnoData alumnoData;
+    private MateriaData materiaData;
     private Conexion conexion;
 
     public VistaPrincipal() {
         initComponents();
         conexion = new Conexion("jdbc:mysql://localhost/perezmauro_universidad", "root", "");
         alumnoData = new AlumnoData(conexion);
+        materiaData = new MateriaData(conexion);
     }
 
     @SuppressWarnings("unchecked")
@@ -93,6 +97,11 @@ public class VistaPrincipal extends javax.swing.JFrame {
         jMenu3.setText("Materia");
 
         mnuCargarMateria.setText("Gestión de Materia");
+        mnuCargarMateria.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuCargarMateriaActionPerformed(evt);
+            }
+        });
         jMenu3.add(mnuCargarMateria);
 
         mnuCargarNota.setText("Cargar Nota ");
@@ -111,6 +120,11 @@ public class VistaPrincipal extends javax.swing.JFrame {
         jMenu4.add(mnuListarAlu);
 
         mnuListarMat.setText("Listar Materias");
+        mnuListarMat.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuListarMatActionPerformed(evt);
+            }
+        });
         jMenu4.add(mnuListarMat);
 
         mnuAluPorMat.setText("Alumnos por Materia");
@@ -157,10 +171,36 @@ public class VistaPrincipal extends javax.swing.JFrame {
             escritorio.add(listarAlumnos);
             listarAlumnos.moveToFront();
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(this, "No se pudieron cargar los alumnos.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "No se pudo cargar la vista.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
     }//GEN-LAST:event_mnuListarAluActionPerformed
+
+    private void mnuCargarMateriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuCargarMateriaActionPerformed
+        // TODO add your handling code here:
+        try {
+            // TODO add your handling code here:
+            escritorio.removeAll();
+            escritorio.repaint();
+            VistaMateria formMateria = new VistaMateria(materiaData);
+            formMateria.setVisible(true);
+            escritorio.add(formMateria);
+            formMateria.moveToFront();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "No se pudo cargar la vista.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+    }//GEN-LAST:event_mnuCargarMateriaActionPerformed
+
+    private void mnuListarMatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuListarMatActionPerformed
+        // TODO add your handling code here:
+        escritorio.removeAll();
+        escritorio.repaint();
+        VistaListarMaterias listarMaterias = new VistaListarMaterias(materiaData);
+        listarMaterias.setVisible(true);
+        escritorio.add(listarMaterias);
+        listarMaterias.moveToFront();
+    }//GEN-LAST:event_mnuListarMatActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -299,6 +339,20 @@ public class VistaPrincipal extends javax.swing.JFrame {
                 alu.getApellido(),
                 alu.getNombre(),
                 alu.isActivo()
+            });
+        }
+        
+    }
+    
+    public static void cargarTablaMaterias(ArrayList<Materia> materias, JTable jTable) {
+        DefaultTableModel modelo = (DefaultTableModel) jTable.getModel();
+        borraFilasTabla(modelo);
+        
+        for (Materia mat : materias) {
+            modelo.addRow(new Object[] {
+                mat.getIdMateria(),
+                mat.getNombre(),
+                mat.isActivo()
             });
         }
         
