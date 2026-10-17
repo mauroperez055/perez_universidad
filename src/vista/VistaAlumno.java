@@ -369,6 +369,10 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(this, "Alumno actualizado con éxito.!", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
             VistaPrincipal.limpiarCampos(pnlDatos, txtBuscar);
             btnActualizar.setEnabled(false);
+            btnGuardar.setEnabled(true);
+            cbxActivo.setEnabled(true);
+            btnAlta.setEnabled(false);
+            btnBaja.setEnabled(false);
             
         } catch (SQLException e) {
             if (e.getErrorCode() == 1062) {

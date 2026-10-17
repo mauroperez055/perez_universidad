@@ -18,12 +18,12 @@ public class Prueba {
     public static void main(String[] args) throws SQLException {
         
         LocalDate fecha = LocalDate.now();
-        Alumno alumnoNuevo = new Alumno(4, 123456, "Messi", "Lionel Andrés", fecha, true);
-        Materia materiaNueva = new Materia(8, "Ingles 1", false);
+        Alumno alumnoNuevo = new Alumno(1, 38749011, "Perez", "Mauro Gabriel", fecha, true);
+        Materia materiaNueva = new Materia(4, "Web 1", true);
         Cursada cursadaNueva = new Cursada(alumnoNuevo, materiaNueva, 0, 0);
         
-        new Prueba().conectar(alumnoNuevo);
-        new Prueba().conectar(materiaNueva);
+//        new Prueba().conectar(alumnoNuevo);
+//        new Prueba().conectar(materiaNueva);
         new Prueba().conectar(cursadaNueva);
     }
     

@@ -277,6 +277,10 @@ public class VistaMateria extends javax.swing.JInternalFrame {
             cbxActivo.setSelected(true);
             JOptionPane.showMessageDialog(this, "Materia dada de alta correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
             btnAltaMat.setEnabled(false);
+            cbxActivo.setEnabled(true);
+            btnGuardarMat.setEnabled(true);
+            btnActualizarMat.setEnabled(false);
+            VistaPrincipal.limpiarCampos(pnlDatos, txtBuscarMat);
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(this, "Error al dar de alta la materia", "Error", JOptionPane.ERROR_MESSAGE);
             return;
@@ -289,7 +293,11 @@ public class VistaMateria extends javax.swing.JInternalFrame {
             materiaData.bajaLogica(materiaSeleccionada);
             cbxActivo.setSelected(false);
             JOptionPane.showMessageDialog(this, "Materia dada de baja correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-            btnAltaMat.setEnabled(false);
+            btnBajaMat.setEnabled(false);
+            cbxActivo.setEnabled(true);
+            btnGuardarMat.setEnabled(true);
+            btnActualizarMat.setEnabled(false);
+            VistaPrincipal.limpiarCampos(pnlDatos, txtBuscarMat);
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(this, "Error al dar de baja la materia", "Error", JOptionPane.ERROR_MESSAGE);
             return;

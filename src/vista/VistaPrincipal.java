@@ -4,6 +4,7 @@ package vista;
 import com.toedter.calendar.JDateChooser;
 import control.AlumnoData;
 import control.Conexion;
+import control.CursadaData;
 import control.MateriaData;
 import java.awt.Component;
 import java.sql.SQLException;
@@ -23,6 +24,7 @@ public class VistaPrincipal extends javax.swing.JFrame {
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(VistaPrincipal.class.getName());
     private AlumnoData alumnoData;
     private MateriaData materiaData;
+    private CursadaData cursadaData;
     private Conexion conexion;
 
     public VistaPrincipal() {
@@ -30,6 +32,7 @@ public class VistaPrincipal extends javax.swing.JFrame {
         conexion = new Conexion("jdbc:mysql://localhost/perezmauro_universidad", "root", "");
         alumnoData = new AlumnoData(conexion);
         materiaData = new MateriaData(conexion);
+        cursadaData = new CursadaData(conexion);
     }
 
     @SuppressWarnings("unchecked")
@@ -72,6 +75,11 @@ public class VistaPrincipal extends javax.swing.JFrame {
         mnuSalir.setText("Archivo");
 
         jMenuItem1.setText("Salir");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
         mnuSalir.add(jMenuItem1);
 
         jMenuBar1.add(mnuSalir);
@@ -87,6 +95,11 @@ public class VistaPrincipal extends javax.swing.JFrame {
         jMenu2.add(mnuCargarAlumno);
 
         mnuInscribir.setText("Inscripción a Materia");
+        mnuInscribir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuInscribirActionPerformed(evt);
+            }
+        });
         jMenu2.add(mnuInscribir);
 
         mnuMarcarAsist.setText("Marcar Asistencia");
@@ -193,14 +206,38 @@ public class VistaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_mnuCargarMateriaActionPerformed
 
     private void mnuListarMatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuListarMatActionPerformed
-        // TODO add your handling code here:
-        escritorio.removeAll();
-        escritorio.repaint();
-        VistaListarMaterias listarMaterias = new VistaListarMaterias(materiaData);
-        listarMaterias.setVisible(true);
-        escritorio.add(listarMaterias);
-        listarMaterias.moveToFront();
+        try {
+            // TODO add your handling code here:
+            escritorio.removeAll();
+            escritorio.repaint();
+            VistaListarMaterias listarMaterias = new VistaListarMaterias(materiaData);
+            listarMaterias.setVisible(true);
+            escritorio.add(listarMaterias);
+            listarMaterias.moveToFront();
+        } catch (SQLException ex) {
+            System.getLogger(VistaPrincipal.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
     }//GEN-LAST:event_mnuListarMatActionPerformed
+
+    private void mnuInscribirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuInscribirActionPerformed
+        // TODO add your handling code here:
+        try {
+            // TODO add your handling code here:
+            escritorio.removeAll();
+            escritorio.repaint();
+            VistaCursada vistaCursada = new VistaCursada(alumnoData, materiaData, cursadaData);
+            vistaCursada.setVisible(true);
+            escritorio.add(vistaCursada);
+            vistaCursada.moveToFront();
+        } catch (SQLException ex) {
+            System.getLogger(VistaPrincipal.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
+    }//GEN-LAST:event_mnuInscribirActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        // TODO add your handling code here:
+        dispose();
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -245,6 +282,8 @@ public class VistaPrincipal extends javax.swing.JFrame {
     public static void cargarComboBox(JComboBox cboBox) {
         cboBox.removeAllItems();
         cboBox.addItem("");
+        
+        
         
 //        for (Categoria cat : Categoria.values()) {
 //            cboBox.addItem(cat.name());

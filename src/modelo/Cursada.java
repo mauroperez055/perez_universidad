@@ -14,13 +14,13 @@ public class Cursada {
     public Cursada() {
     }
 
-    public Cursada(int idCursada, Alumno alumno, Materia materia, double nota, int asist) {
+    public Cursada(int idCursada, Alumno alumno, Materia materia, double nota, int asist, Year anio) {
         this.idCursada = idCursada;
         this.alumno = alumno;
         this.materia = materia;
         this.nota = nota;
         this.asist = asist;
-        this.anio = anio = Year.now();
+        this.anio = anio;
     }
     
     public Cursada(Alumno alumno, Materia materia, double nota, int asist) {
@@ -28,7 +28,7 @@ public class Cursada {
         this.materia = materia;
         this.nota = nota;
         this.asist = asist;
-        this.anio = anio = Year.now();
+        this.anio = Year.now();
     }
 
     public int getIdCursada() {
@@ -70,6 +70,11 @@ public class Cursada {
     public void setAsist(int asist) {
         this.asist = asist;
     }
+
+    public Year getAnio() {
+        return anio;
+    }
+    
 
     @Override
     public String toString() {
