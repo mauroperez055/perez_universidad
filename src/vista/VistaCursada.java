@@ -38,6 +38,7 @@ public class VistaCursada extends javax.swing.JInternalFrame {
         btnDesinscribir.setEnabled(false);
         rbtnInscriptas.setEnabled(false);
         rbtnNoInscriptas.setEnabled(false);
+        lblMensaje.setVisible(false);
         
         VistaPrincipal.borraFilasTabla(modelo);
         
@@ -62,6 +63,7 @@ public class VistaCursada extends javax.swing.JInternalFrame {
         jLabel3 = new javax.swing.JLabel();
         rbtnInscriptas = new javax.swing.JRadioButton();
         rbtnNoInscriptas = new javax.swing.JRadioButton();
+        lblMensaje = new javax.swing.JLabel();
 
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
@@ -134,6 +136,8 @@ public class VistaCursada extends javax.swing.JInternalFrame {
             }
         });
 
+        lblMensaje.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -149,21 +153,26 @@ public class VistaCursada extends javax.swing.JInternalFrame {
                 .addComponent(btnDesinscribir)
                 .addGap(121, 121, 121))
             .addGroup(layout.createSequentialGroup()
-                .addGap(64, 64, 64)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel2))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
+                        .addGap(64, 64, 64)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel2))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(cboxAlumnosActivos, javax.swing.GroupLayout.PREFERRED_SIZE, 363, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(cboxAlumnosActivos, javax.swing.GroupLayout.PREFERRED_SIZE, 363, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(58, 58, 58)
+                                .addComponent(rbtnInscriptas)
+                                .addGap(93, 93, 93)
+                                .addComponent(rbtnNoInscriptas))))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(58, 58, 58)
-                        .addComponent(rbtnInscriptas)
-                        .addGap(93, 93, 93)
-                        .addComponent(rbtnNoInscriptas)))
+                        .addGap(154, 154, 154)
+                        .addComponent(lblMensaje)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -181,8 +190,10 @@ public class VistaCursada extends javax.swing.JInternalFrame {
                     .addComponent(rbtnInscriptas)
                     .addComponent(rbtnNoInscriptas))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 314, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(26, 26, 26)
+                .addComponent(lblMensaje, javax.swing.GroupLayout.DEFAULT_SIZE, 16, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnInscribir)
                     .addComponent(btnDesinscribir))
@@ -207,6 +218,7 @@ public class VistaCursada extends javax.swing.JInternalFrame {
 
             rbtnInscriptas.setEnabled(false);
             rbtnNoInscriptas.setEnabled(false);
+            lblMensaje.setVisible(false);
 
             btnInscribir.setEnabled(false);
             btnDesinscribir.setEnabled(false);
@@ -239,6 +251,7 @@ public class VistaCursada extends javax.swing.JInternalFrame {
             int idAlumno = alumnoSeleccionado.getIdAlumno();
             materiasInscriptas = cursadaData.materiasInscriptas(idAlumno);
             materiasNoInscriptas = cursadaData.materiasNoInscriptas(idAlumno);
+            
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(this, "No se pudo obtener las materias del alumno.", "Atención", JOptionPane.ERROR_MESSAGE);
             System.out.println(ex.getMessage());
@@ -275,6 +288,8 @@ public class VistaCursada extends javax.swing.JInternalFrame {
         }
         btnInscribir.setEnabled(false);
         btnDesinscribir.setEnabled(true);
+        lblMensaje.setText("Seleccione una materia para Desinscribirse.");
+        lblMensaje.setVisible(true);
         VistaPrincipal.cargarTablaMaterias(materiasInscriptas, tblMateriasActivas);
     }//GEN-LAST:event_rbtnInscriptasActionPerformed
 
@@ -285,6 +300,8 @@ public class VistaCursada extends javax.swing.JInternalFrame {
         }
         btnDesinscribir.setEnabled(false);
         btnInscribir.setEnabled(true);
+        lblMensaje.setText("Seleccione una materia para Inscribirse.");
+        lblMensaje.setVisible(true);
         VistaPrincipal.cargarTablaMaterias(materiasNoInscriptas, tblMateriasActivas);
     }//GEN-LAST:event_rbtnNoInscriptasActionPerformed
 
@@ -296,6 +313,7 @@ public class VistaCursada extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblMensaje;
     private javax.swing.ButtonGroup rbgInscriptas;
     private javax.swing.JRadioButton rbtnInscriptas;
     private javax.swing.JRadioButton rbtnNoInscriptas;
