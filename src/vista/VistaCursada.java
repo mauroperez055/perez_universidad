@@ -5,6 +5,7 @@ import control.AlumnoData;
 import control.CursadaData;
 import control.MateriaData;
 import java.sql.SQLException;
+import java.time.Year;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -20,6 +21,7 @@ public class VistaCursada extends javax.swing.JInternalFrame {
     private ArrayList<Alumno> alumnos;
     private Alumno alumnoSeleccionado;
     private Materia materiaSeleccionada;
+    private Cursada cursada;
     private ArrayList<Materia> materias; // lista de materias activas
     private ArrayList<Materia> materiasInscriptas; 
     private ArrayList<Materia> materiasNoInscriptas;
@@ -116,6 +118,11 @@ public class VistaCursada extends javax.swing.JInternalFrame {
 
         btnDesinscribir.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnDesinscribir.setText("Desinscribir");
+        btnDesinscribir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDesinscribirActionPerformed(evt);
+            }
+        });
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel3.setText("Materias:");
@@ -210,11 +217,23 @@ public class VistaCursada extends javax.swing.JInternalFrame {
         }
 
         String itemSeleccionado = (String) cboxAlumnosActivos.getSelectedItem();
+        
+        alumnoSeleccionado = null;
+        materiaSeleccionada = null;
+
+        btnInscribir.setEnabled(false);
+        btnDesinscribir.setEnabled(false);
+
+        tblMateriasActivas.clearSelection();
+        VistaPrincipal.borraFilasTabla(modelo);
+        rbgInscriptas.clearSelection();
+        lblMensaje.setVisible(false);
 
         if (itemSeleccionado.equals("--") || itemSeleccionado == null) {
             alumnoSeleccionado = null;
             materiaSeleccionada = null;
             materiasInscriptas = null;
+            tblMateriasActivas.clearSelection();
 
             rbtnInscriptas.setEnabled(false);
             rbtnNoInscriptas.setEnabled(false);
@@ -261,6 +280,38 @@ public class VistaCursada extends javax.swing.JInternalFrame {
 
     private void btnInscribirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInscribirActionPerformed
         // TODO add your handling code here:
+        if (alumnoSeleccionado == null) {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar un alumno.", "Atención", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        if (materiaSeleccionada == null) {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar una materia.", "Atención", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        cursada = new Cursada(alumnoSeleccionado, materiaSeleccionada, 0, 0);
+        
+        try {
+            cursadaData.inscribirAlumno(cursada);
+            JOptionPane.showMessageDialog(this, "Alumno inscripto correctamente!", "Éxito!", JOptionPane.INFORMATION_MESSAGE);
+            
+            int idAlumno = alumnoSeleccionado.getIdAlumno();
+            materiasInscriptas = cursadaData.materiasInscriptas(idAlumno);
+            materiasNoInscriptas = cursadaData.materiasNoInscriptas(idAlumno);
+            
+            VistaPrincipal.cargarTablaMaterias(materiasNoInscriptas, tblMateriasActivas);
+            
+            materiaSeleccionada = null;
+            tblMateriasActivas.clearSelection();
+            
+            btnInscribir.setEnabled(true);
+            btnDesinscribir.setEnabled(false);
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "No se pudo inscribir al alumno.", "Error!", JOptionPane.ERROR_MESSAGE);
+            System.out.println(ex.getMessage());
+            return;
+        } 
         
     }//GEN-LAST:event_btnInscribirActionPerformed
 
@@ -286,8 +337,14 @@ public class VistaCursada extends javax.swing.JInternalFrame {
         if (alumnoSeleccionado == null) {
             return;
         }
-        btnInscribir.setEnabled(false);
+        
+        if (materiaSeleccionada == null) {
+            lblMensaje.setVisible(false);
+        }
+        materiaSeleccionada = null;
+        tblMateriasActivas.clearSelection();
         btnDesinscribir.setEnabled(true);
+        btnInscribir.setEnabled(false);
         lblMensaje.setText("Seleccione una materia para Desinscribirse.");
         lblMensaje.setVisible(true);
         VistaPrincipal.cargarTablaMaterias(materiasInscriptas, tblMateriasActivas);
@@ -298,12 +355,66 @@ public class VistaCursada extends javax.swing.JInternalFrame {
         if (alumnoSeleccionado == null) {
             return;
         }
-        btnDesinscribir.setEnabled(false);
+        
+        if (materiaSeleccionada == null) {
+            lblMensaje.setVisible(false);
+        }
+        
+        materiaSeleccionada = null;
+        tblMateriasActivas.clearSelection();
         btnInscribir.setEnabled(true);
+        btnDesinscribir.setEnabled(false);
         lblMensaje.setText("Seleccione una materia para Inscribirse.");
         lblMensaje.setVisible(true);
         VistaPrincipal.cargarTablaMaterias(materiasNoInscriptas, tblMateriasActivas);
     }//GEN-LAST:event_rbtnNoInscriptasActionPerformed
+
+    private void btnDesinscribirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDesinscribirActionPerformed
+        // TODO add your handling code here:
+        if (alumnoSeleccionado == null) {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar un alumno.", "Atención", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        if (materiaSeleccionada == null) {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar una materia.", "Atención", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        int eleccion = JOptionPane.showConfirmDialog(this, "¿Está seguro de eliminar la cursada?", "Atención", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+        
+        if (eleccion != JOptionPane.YES_OPTION) {
+            return;
+        }
+        
+        try {
+            Integer idCursada = cursadaData.buscarIdCursada(alumnoSeleccionado.getIdAlumno(), materiaSeleccionada.getIdMateria(), Year.now());
+            
+            if (idCursada == null) {
+                JOptionPane.showMessageDialog(this, "No se encontró la cursada.", "Atención", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            
+            cursadaData.desinscribirAlumno(idCursada);
+            JOptionPane.showMessageDialog(this, "Cursada eliminada!", "Éxito!", JOptionPane.INFORMATION_MESSAGE);
+            
+            int idAlumno = alumnoSeleccionado.getIdAlumno();
+            materiasInscriptas = cursadaData.materiasInscriptas(idAlumno);
+            materiasNoInscriptas = cursadaData.materiasNoInscriptas(idAlumno);
+            
+            VistaPrincipal.cargarTablaMaterias(materiasInscriptas, tblMateriasActivas);
+            
+            materiaSeleccionada = null;
+            tblMateriasActivas.clearSelection();
+            
+            btnInscribir.setEnabled(false);
+            btnDesinscribir.setEnabled(false);
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "No se pudo eliminar la cursada.", "Error!", JOptionPane.ERROR_MESSAGE);
+            System.out.println(ex.getMessage());
+            return;
+        } 
+    }//GEN-LAST:event_btnDesinscribirActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDesinscribir;

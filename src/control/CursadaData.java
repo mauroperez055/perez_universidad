@@ -9,6 +9,7 @@ import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.Year;
 import java.util.ArrayList;
+import java.util.Date;
 import modelo.Alumno;
 import modelo.Cursada;
 import modelo.Materia;
@@ -76,6 +77,7 @@ public class CursadaData {
 
                 materiasInscriptas.add(materia);
             }
+//            ps.close();
         } catch (SQLException e) {
             System.out.println("No se pudo obtener las materias.");
             throw e;
@@ -109,6 +111,7 @@ public class CursadaData {
                 
                 Materia materia = new Materia(idMateria, nombre, activo);
                 materiasNoInscriptas.add(materia);
+//                ps.close();
             }
         } catch (SQLException e) {
             System.out.println("No se pudo obtener las materias.");
@@ -116,5 +119,49 @@ public class CursadaData {
         }
         
         return materiasNoInscriptas;
+    }
+    
+    public void desinscribirAlumno(int idCursada) throws SQLException {
+        String sql = "DELETE FROM cursada WHERE idCursada = ?";
+        
+        try {
+            PreparedStatement ps = conection.prepareStatement(sql);
+            ps.setInt(1, idCursada);
+            int exito = ps.executeUpdate();
+            
+            if (exito == 1) {
+                System.out.println("Cursada eliminada.");
+            } else {
+                System.out.println("No se pudo eliminar la cursada.");
+            }
+            
+            ps.close();
+        } catch (SQLException e) {
+            System.out.println("No se pudo eliminar la cursada." + e.getMessage());
+            throw e;
+        }
+    }
+    
+    public Integer buscarIdCursada(int idAlumno, int idMateria, Year anio) throws SQLException {
+        
+        String sql = "SELECT c.idCursada FROM cursada c WHERE c.idAlumno = ? AND c.idMateria = ? AND c.anio = ?";
+        
+        try {
+            PreparedStatement ps = conection.prepareStatement(sql);
+            ps.setInt(1, idAlumno);
+            ps.setInt(2, idMateria);
+            ps.setInt(3, anio.getValue());
+            
+            ResultSet rs = ps.executeQuery();
+            
+           if (rs.next()) {
+               return rs.getInt(1);
+           }
+           ps.close();
+        } catch (SQLException e) {
+            System.out.println("No se pudo obtener el id de la cursada." + e.getMessage());
+            throw e;
+        }
+        return null;
     }
 }
