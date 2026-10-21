@@ -47,7 +47,6 @@ public class VistaPrincipal extends javax.swing.JFrame {
         jMenu2 = new javax.swing.JMenu();
         mnuCargarAlumno = new javax.swing.JMenuItem();
         mnuInscribir = new javax.swing.JMenuItem();
-        mnuMarcarAsist = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         mnuCargarMateria = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
@@ -55,6 +54,7 @@ public class VistaPrincipal extends javax.swing.JFrame {
         mnuListarMat = new javax.swing.JMenuItem();
         mnuAluPorMat = new javax.swing.JMenuItem();
         mnuMatPorAlu = new javax.swing.JMenuItem();
+        mnuMarcarAsist = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Gestión ULP");
@@ -101,9 +101,6 @@ public class VistaPrincipal extends javax.swing.JFrame {
             }
         });
         jMenu2.add(mnuInscribir);
-
-        mnuMarcarAsist.setText("Marcar Asistencia");
-        jMenu2.add(mnuMarcarAsist);
 
         jMenuBar1.add(jMenu2);
 
@@ -152,6 +149,14 @@ public class VistaPrincipal extends javax.swing.JFrame {
             }
         });
         jMenu4.add(mnuMatPorAlu);
+
+        mnuMarcarAsist.setText("Marcar Asistencia");
+        mnuMarcarAsist.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuMarcarAsistActionPerformed(evt);
+            }
+        });
+        jMenu4.add(mnuMarcarAsist);
 
         jMenuBar1.add(jMenu4);
 
@@ -275,6 +280,22 @@ public class VistaPrincipal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_mnuCargarMateriaActionPerformed
 
+    private void mnuMarcarAsistActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuMarcarAsistActionPerformed
+        // TODO add your handling code here:
+        try {
+            // TODO add your handling code here:
+            escritorio.removeAll();
+            escritorio.repaint();
+            VistaMarcarAsistencia formAsistencia = new VistaMarcarAsistencia(cursadaData, alumnoData, materiaData);
+            formAsistencia.setVisible(true);
+            escritorio.add(formAsistencia);
+            formAsistencia.moveToFront();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "No se pudo cargar la vista.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+    }//GEN-LAST:event_mnuMarcarAsistActionPerformed
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -373,7 +394,6 @@ public class VistaPrincipal extends javax.swing.JFrame {
     public static void cargarTablaAlumnos(ArrayList<Alumno> alumnos, JTable jTable) {
         DefaultTableModel modelo = (DefaultTableModel) jTable.getModel();
         borraFilasTabla(modelo);
-        System.out.println("longitud");
         for (Alumno alu : alumnos) {
             modelo.addRow(new Object[] {
                 alu.getIdAlumno(),

@@ -8,13 +8,13 @@ public class Cursada {
     private Alumno alumno;
     private Materia materia;
     private double nota;
-    private int asist;
+    private float asist;
     private Year anio; // año lectivo, en BD es Year
 
     public Cursada() {
     }
 
-    public Cursada(int idCursada, Alumno alumno, Materia materia, double nota, int asist, Year anio) {
+    public Cursada(int idCursada, Alumno alumno, Materia materia, double nota, float asist, Year anio) {
         this.idCursada = idCursada;
         this.alumno = alumno;
         this.materia = materia;
@@ -23,7 +23,7 @@ public class Cursada {
         this.anio = anio;
     }
     
-    public Cursada(Alumno alumno, Materia materia, double nota, int asist) {
+    public Cursada(Alumno alumno, Materia materia, double nota, float asist) {
         this.alumno = alumno;
         this.materia = materia;
         this.nota = nota;
@@ -63,11 +63,11 @@ public class Cursada {
         this.nota = nota;
     }
 
-    public int getAsist() {
+    public float getAsist() {
         return asist;
     }
 
-    public void setAsist(int asist) {
+    public void setAsist(float asist) {
         this.asist = asist;
     }
 

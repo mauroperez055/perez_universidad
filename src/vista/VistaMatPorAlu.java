@@ -75,7 +75,7 @@ public class VistaMatPorAlu extends javax.swing.JInternalFrame {
                 {null, null, null, null, null}
             },
             new String [] {
-                "ID MATERIA", "NOMBRE MATERIA", "ASISTENCIA", "NOTA FINAL", "AÑO"
+                "ID MATERIA", "NOMBRE MATERIA", "ASISTENCIA (%)", "NOTA FINAL", "AÑO"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -166,6 +166,7 @@ public class VistaMatPorAlu extends javax.swing.JInternalFrame {
                     break;
             }
         }
+        
         if (alumnoSeleccionado == null) {
             return;
         }

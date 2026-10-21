@@ -9,7 +9,6 @@ import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.Year;
 import java.util.ArrayList;
-import java.util.Date;
 import modelo.Alumno;
 import modelo.Cursada;
 import modelo.Materia;
@@ -31,7 +30,7 @@ public class CursadaData {
             ps.setInt(1, cursada.getAlumno().getIdAlumno());
             ps.setInt(2, cursada.getMateria().getIdMateria());
             ps.setDouble(3, cursada.getNota());
-            ps.setInt(4, cursada.getAsist());
+            ps.setFloat(4, cursada.getAsist());
             ps.setInt(5, cursada.getAnio().getValue());
             ps.executeUpdate();
             
@@ -230,7 +229,7 @@ public class CursadaData {
                 boolean activoAlu = rs.getBoolean("activoAlu");
                 
                 int idCursada = rs.getInt("idCursada");
-                int asist = rs.getInt("asist");
+                float asist = rs.getFloat("asist");
                 double nota = rs.getDouble("nota");
                 Year anio = Year.of(rs.getInt("anio"));
                 
@@ -296,5 +295,59 @@ public class CursadaData {
             throw e;
         }
         return false;
+    }
+    
+    public void marcarAsistencia(int idCursada, float asist) throws SQLException {
+        String sql ="UPDATE cursada SET asist = ? WHERE idCursada = ?";
+        
+        try {
+            PreparedStatement ps = conection.prepareStatement(sql);
+            ps.setFloat(1, asist);
+            ps.setInt(2, idCursada);
+            
+            int exito = ps.executeUpdate();
+            
+            if (exito == 1) {
+                System.out.println("Asistencia guardada.");
+            } else {
+                System.out.println("No se pudo guardar la asistencia.");
+            }
+            ps.close();
+        } catch (SQLException e) {
+            System.out.println("No se pudo obtener el id de la cursada.");
+            throw e;
+        }
+    }
+    
+    public ArrayList<Alumno> alumnosConCursada() throws SQLException {
+        ArrayList<Alumno> alumnosConCursada = new ArrayList<>();
+        
+        String sql = "SELECT DISTINCT a.idAlumno, a.dni, a.apellido, a.nombre AS nomAlu, a.fechaNac, a.activo AS activoAlu "
+                + "FROM cursada c "
+                + "INNER JOIN alumno a ON c.idAlumno = a.idAlumno "
+                + "INNER JOIN materia m ON c.idMateria = m.idMateria";
+        
+        try {
+            PreparedStatement ps = conection.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            
+            while (rs.next()) {
+                int idAlumno = rs.getInt("idAlumno");
+                int dni = rs.getInt("dni");
+                String apellido = rs.getString("apellido");
+                String nombre = rs.getString("nomAlu");
+                LocalDate fechaNac = rs.getDate("fechaNac").toLocalDate();
+                boolean activo = rs.getBoolean("activoAlu");
+                
+                Alumno alumno = new Alumno(idAlumno, dni, apellido, nombre, fechaNac, activo);
+                
+                alumnosConCursada.add(alumno);
+            }
+            
+            return alumnosConCursada;
+        } catch (SQLException e) {
+            System.out.println("No se pudieron obtener los alumnos." + e.getMessage());
+            throw e;
+        }
     }
 }
