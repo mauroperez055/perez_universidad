@@ -1,6 +1,7 @@
 
 package vista;
 
+import control.CursadaData;
 import control.MateriaData;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
@@ -9,11 +10,13 @@ import modelo.Materia;
 public class VistaMateria extends javax.swing.JInternalFrame {
 
     private MateriaData materiaData;
+    private CursadaData cursadaData;
     private Materia materiaSeleccionada;
     
-    public VistaMateria(MateriaData materiaData) throws SQLException {
+    public VistaMateria(MateriaData materiaData, CursadaData cursadaData) throws SQLException {
         initComponents();
         this.materiaData = materiaData;
+        this.cursadaData = cursadaData;
         btnActualizarMat.setEnabled(false);
         btnAltaMat.setEnabled(false);
         btnBajaMat.setEnabled(false);
@@ -71,7 +74,7 @@ public class VistaMateria extends javax.swing.JInternalFrame {
                     .addComponent(jLabel2)
                     .addComponent(txtNombreMat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(pnlDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(pnlDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
                     .addComponent(cbxActivo))
                 .addContainerGap(24, Short.MAX_VALUE))
@@ -289,7 +292,19 @@ public class VistaMateria extends javax.swing.JInternalFrame {
 
     private void btnBajaMatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBajaMatActionPerformed
         // TODO add your handling code here:
+        
         try {
+            int idMateria = materiaSeleccionada.getIdMateria();
+            
+            if (cursadaData.materiaTieneInscriptos(idMateria)) {
+                JOptionPane.showMessageDialog(
+                        this, 
+                        "No se puede dar de baja la materia porque tiene alumnos inscriptos.", 
+                        "Atención", 
+                        JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            
             materiaData.bajaLogica(materiaSeleccionada);
             cbxActivo.setSelected(false);
             JOptionPane.showMessageDialog(this, "Materia dada de baja correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
@@ -299,7 +314,7 @@ public class VistaMateria extends javax.swing.JInternalFrame {
             btnActualizarMat.setEnabled(false);
             VistaPrincipal.limpiarCampos(pnlDatos, txtBuscarMat);
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(this, "Error al dar de baja la materia", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "No se pudo verificar si la materia tiene alumnos inscriptos.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
     }//GEN-LAST:event_btnBajaMatActionPerformed

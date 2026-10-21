@@ -270,4 +270,31 @@ public class CursadaData {
             throw e;
         }
     }
+    
+    public boolean materiaTieneInscriptos(int idMateria) throws SQLException {
+        String sql = "SELECT EXISTS ( "
+                            + "SELECT 1 "
+                            + "FROM materia m "
+                            + "INNER JOIN cursada c ON m.idMateria = c.idMateria "
+                            + "WHERE m.idMateria = ? "
+                            + "AND m.activo = 1 "
+                        + ")";
+        
+        try {
+            PreparedStatement ps = conection.prepareStatement(sql);
+            ps.setInt(1, idMateria);
+            
+            ResultSet rs = ps.executeQuery();
+            
+            if (rs.next()) {
+                return rs.getBoolean(1);
+            }
+            
+            System.out.println("No se puede dar de baja la materia.");
+        } catch (SQLException e) {
+            System.out.println("No se pudo controlar si la materia tiene alumnos." + e.getMessage());
+            throw e;
+        }
+        return false;
+    }
 }

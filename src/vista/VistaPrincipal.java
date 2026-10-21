@@ -265,7 +265,7 @@ public class VistaPrincipal extends javax.swing.JFrame {
             // TODO add your handling code here:
             escritorio.removeAll();
             escritorio.repaint();
-            VistaMateria formMateria = new VistaMateria(materiaData);
+            VistaMateria formMateria = new VistaMateria(materiaData, cursadaData);
             formMateria.setVisible(true);
             escritorio.add(formMateria);
             formMateria.moveToFront();
