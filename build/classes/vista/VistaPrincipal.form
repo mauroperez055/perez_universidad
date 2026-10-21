@@ -34,7 +34,7 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="mnuInscribir">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Inscripci&#xf3;n a Materia"/>
+                <Property name="text" type="java.lang.String" value="Gesti&#xf3;n de Inscripci&#xf3;n"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuInscribirActionPerformed"/>
@@ -59,11 +59,6 @@
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuCargarMateriaActionPerformed"/>
               </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="mnuCargarNota">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Cargar Nota "/>
-              </Properties>
             </MenuItem>
           </SubComponents>
         </Menu>
@@ -92,11 +87,17 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Alumnos por Materia"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuAluPorMatActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="mnuMatPorAlu">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Materias por Alumno"/>
+                <Property name="text" type="java.lang.String" value="Cargar Nota "/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuMatPorAluActionPerformed"/>
+              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>

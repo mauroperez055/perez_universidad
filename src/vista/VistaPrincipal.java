@@ -17,6 +17,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import modelo.Alumno;
+import modelo.Cursada;
 import modelo.Materia;
 
 public class VistaPrincipal extends javax.swing.JFrame {
@@ -49,7 +50,6 @@ public class VistaPrincipal extends javax.swing.JFrame {
         mnuMarcarAsist = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         mnuCargarMateria = new javax.swing.JMenuItem();
-        mnuCargarNota = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         mnuListarAlu = new javax.swing.JMenuItem();
         mnuListarMat = new javax.swing.JMenuItem();
@@ -94,7 +94,7 @@ public class VistaPrincipal extends javax.swing.JFrame {
         });
         jMenu2.add(mnuCargarAlumno);
 
-        mnuInscribir.setText("Inscripción a Materia");
+        mnuInscribir.setText("Gestión de Inscripción");
         mnuInscribir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 mnuInscribirActionPerformed(evt);
@@ -117,9 +117,6 @@ public class VistaPrincipal extends javax.swing.JFrame {
         });
         jMenu3.add(mnuCargarMateria);
 
-        mnuCargarNota.setText("Cargar Nota ");
-        jMenu3.add(mnuCargarNota);
-
         jMenuBar1.add(jMenu3);
 
         jMenu4.setText("Consultas");
@@ -141,9 +138,19 @@ public class VistaPrincipal extends javax.swing.JFrame {
         jMenu4.add(mnuListarMat);
 
         mnuAluPorMat.setText("Alumnos por Materia");
+        mnuAluPorMat.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuAluPorMatActionPerformed(evt);
+            }
+        });
         jMenu4.add(mnuAluPorMat);
 
-        mnuMatPorAlu.setText("Materias por Alumno");
+        mnuMatPorAlu.setText("Cargar Nota ");
+        mnuMatPorAlu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuMatPorAluActionPerformed(evt);
+            }
+        });
         jMenu4.add(mnuMatPorAlu);
 
         jMenuBar1.add(jMenu4);
@@ -189,22 +196,6 @@ public class VistaPrincipal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_mnuListarAluActionPerformed
 
-    private void mnuCargarMateriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuCargarMateriaActionPerformed
-        // TODO add your handling code here:
-        try {
-            // TODO add your handling code here:
-            escritorio.removeAll();
-            escritorio.repaint();
-            VistaMateria formMateria = new VistaMateria(materiaData);
-            formMateria.setVisible(true);
-            escritorio.add(formMateria);
-            formMateria.moveToFront();
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(this, "No se pudo cargar la vista.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-    }//GEN-LAST:event_mnuCargarMateriaActionPerformed
-
     private void mnuListarMatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuListarMatActionPerformed
         try {
             // TODO add your handling code here:
@@ -222,7 +213,6 @@ public class VistaPrincipal extends javax.swing.JFrame {
     private void mnuInscribirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuInscribirActionPerformed
         // TODO add your handling code here:
         try {
-            // TODO add your handling code here:
             escritorio.removeAll();
             escritorio.repaint();
             VistaCursada vistaCursada = new VistaCursada(alumnoData, materiaData, cursadaData);
@@ -238,6 +228,52 @@ public class VistaPrincipal extends javax.swing.JFrame {
         // TODO add your handling code here:
         dispose();
     }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void mnuAluPorMatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuAluPorMatActionPerformed
+        // TODO add your handling code here:
+        escritorio.removeAll();
+        escritorio.repaint();
+        VistaAluPorMat vistaAluPorMat;
+        try {
+            vistaAluPorMat = new VistaAluPorMat(cursadaData, materiaData);
+            vistaAluPorMat.setVisible(true);
+            escritorio.add(vistaAluPorMat);
+            vistaAluPorMat.moveToFront();
+        } catch (SQLException ex) {
+            System.getLogger(VistaPrincipal.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
+        
+    }//GEN-LAST:event_mnuAluPorMatActionPerformed
+
+    private void mnuMatPorAluActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuMatPorAluActionPerformed
+        // TODO add your handling code here:
+        escritorio.removeAll();
+        escritorio.repaint();
+        try {
+            VistaMatPorAlu vistaMatPorAlu = new VistaMatPorAlu(alumnoData, materiaData, cursadaData);
+            vistaMatPorAlu.setVisible(true);
+            escritorio.add(vistaMatPorAlu);
+            vistaMatPorAlu.moveToFront();
+        } catch (SQLException ex) {
+            System.getLogger(VistaPrincipal.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
+    }//GEN-LAST:event_mnuMatPorAluActionPerformed
+
+    private void mnuCargarMateriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuCargarMateriaActionPerformed
+        // TODO add your handling code here:
+        try {
+            // TODO add your handling code here:
+            escritorio.removeAll();
+            escritorio.repaint();
+            VistaMateria formMateria = new VistaMateria(materiaData);
+            formMateria.setVisible(true);
+            escritorio.add(formMateria);
+            formMateria.moveToFront();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "No se pudo cargar la vista.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+    }//GEN-LAST:event_mnuCargarMateriaActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -279,17 +315,6 @@ public class VistaPrincipal extends javax.swing.JFrame {
         }
     }
     
-    public static void cargarComboBox(JComboBox cboBox) {
-        cboBox.removeAllItems();
-        cboBox.addItem("");
-        
-        
-        
-//        for (Categoria cat : Categoria.values()) {
-//            cboBox.addItem(cat.name());
-//        }
-    }
-    
     public static boolean validarCamposVacios(JPanel jPanel) {
         
         for (int i = 0; i < jPanel.getComponents().length; i++) {
@@ -301,11 +326,6 @@ public class VistaPrincipal extends javax.swing.JFrame {
                     return false;
                 }
                 
-//                if (caja == txtPrecio && !validarPrecio(caja)) {
-//                    JOptionPane.showMessageDialog(null, "Debe ingresar un precio válido.", "Atención!", JOptionPane.ERROR_MESSAGE);
-//                    txtPrecio.setText("");
-//                    return false;
-//                }
             }
             
             if (jPanel.getComponents()[i] instanceof JComboBox) {
@@ -315,14 +335,6 @@ public class VistaPrincipal extends javax.swing.JFrame {
                     return false;
                 }
             }
-            
-//            if (jPanel.getComponents()[i] instanceof JSpinner) {
-//                JSpinner spin = (JSpinner) jPanel.getComponents()[i];
-//                if ((int) spin.getValue() < 0) {
-//                    JOptionPane.showMessageDialog(null, "El stock no puede ser negativo.", "Atención!", JOptionPane.WARNING_MESSAGE);
-//                    return false;
-//                }
-//            }
 
         }
         return true;
@@ -347,16 +359,7 @@ public class VistaPrincipal extends javax.swing.JFrame {
             }
             
             txtBuscar.setText("");
-            
-//            if (jPanel.getComponents()[i] instanceof JSpinner) {
-//                JSpinner spinner = (JSpinner) jPanel.getComponents()[i];
-//                spinner.setValue(0);
-//            }
-            
-//            if (jPanel.getComponents()[i] instanceof JComboBox) {
-//                combo = (JComboBox) jPanel.getComponents()[i];
-//                combo.setSelectedIndex(-1);
-//            }
+
         }
     }
     
@@ -370,13 +373,14 @@ public class VistaPrincipal extends javax.swing.JFrame {
     public static void cargarTablaAlumnos(ArrayList<Alumno> alumnos, JTable jTable) {
         DefaultTableModel modelo = (DefaultTableModel) jTable.getModel();
         borraFilasTabla(modelo);
-        
+        System.out.println("longitud");
         for (Alumno alu : alumnos) {
             modelo.addRow(new Object[] {
                 alu.getIdAlumno(),
                 alu.getDni(),
                 alu.getApellido(),
                 alu.getNombre(),
+                alu.getFechaNac(),
                 alu.isActivo()
             });
         }
@@ -396,6 +400,22 @@ public class VistaPrincipal extends javax.swing.JFrame {
         }
         
     }
+    
+    public static void cargarTblMatConNota(ArrayList<Cursada> cursadasRegistradas, JTable jTable) {
+        DefaultTableModel modelo = (DefaultTableModel) jTable.getModel();
+        borraFilasTabla(modelo);
+        
+        for (Cursada curs : cursadasRegistradas) {
+            modelo.addRow(new Object[] {
+                curs.getMateria().getIdMateria(),
+                curs.getMateria().getNombre(),
+                curs.getAsist(),
+                curs.getNota(),
+                curs.getAnio()
+            });
+        }
+        
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDesktopPane escritorio;
@@ -407,7 +427,6 @@ public class VistaPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem mnuAluPorMat;
     private javax.swing.JMenuItem mnuCargarAlumno;
     private javax.swing.JMenuItem mnuCargarMateria;
-    private javax.swing.JMenuItem mnuCargarNota;
     private javax.swing.JMenuItem mnuInscribir;
     private javax.swing.JMenuItem mnuListarAlu;
     private javax.swing.JMenuItem mnuListarMat;

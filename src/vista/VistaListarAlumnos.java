@@ -36,17 +36,17 @@ public class VistaListarAlumnos extends javax.swing.JInternalFrame {
 
         tblAlumnos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "DNI", "APELLIDO", "NOMBRE", "ACTIVO"
+                "ID", "DNI", "APELLIDO", "NOMBRE", "FECHA NAC", "ACTIVO"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
