@@ -22,8 +22,6 @@ public class VistaMarcarAsistencia extends javax.swing.JInternalFrame {
     private Materia materiaSeleccionada;
     private ArrayList<Alumno> alumnosConCursada;
     private ArrayList<Materia> materiasActivas;
-    private float asist;
-    private int contador = 30;
     private String fechaActual;
     
     public VistaMarcarAsistencia(CursadaData cursadaData, AlumnoData alumnoData, MateriaData materiaData) throws SQLException {
@@ -151,13 +149,22 @@ public class VistaMarcarAsistencia extends javax.swing.JInternalFrame {
             return;
         }
         try {
-            asist = asist +1;
-            System.out.println("asist: " + asist);
-            float porcentajeAsist = (asist *100) / 30;
             Year anio = Year.now();
             int idAlumno = alumnoSeleccionado.getIdAlumno();
             int idMateria = materiaSeleccionada.getIdMateria();
             Integer idCursada = cursadaData.buscarIdCursada(idAlumno, idMateria, anio);
+            
+            float porcentajeAsist = cursadaData.recuperarAsistencia(idCursada);
+            System.out.println("porcentaje de la bd: " + porcentajeAsist);
+//            if (porcentajeAsist == 0.0) {
+//                porcentajeAsist = (1 * 100) / 30;
+//                System.out.println("primera asistencia: " + porcentajeAsist);
+//                cursadaData.marcarAsistencia(idCursada, porcentajeAsist);
+//                JOptionPane.showMessageDialog(this, "Asistencia guardada correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+//                return;
+//            } 
+            
+            porcentajeAsist = (float) (porcentajeAsist + 3.33f);
         
             cursadaData.marcarAsistencia(idCursada, porcentajeAsist);
             JOptionPane.showMessageDialog(this, "Asistencia guardada correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);

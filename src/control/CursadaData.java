@@ -350,4 +350,25 @@ public class CursadaData {
             throw e;
         }
     }
+    
+    public float recuperarAsistencia(int idCursada) throws SQLException {
+        String sql = "SELECT c.asist FROM cursada c WHERE c.idCursada = ?";
+        
+        try {
+            PreparedStatement ps = conection.prepareStatement(sql);
+            ps.setInt(1, idCursada);
+            
+            ResultSet rs = ps.executeQuery();
+            
+            if (rs.next()) {
+                return rs.getFloat("asist");
+            }
+            
+        } catch (SQLException e) {
+            System.out.println("No se pudo obtener la asistencia." + e.getMessage());
+            throw e;
+        }
+        return 0;
+        
+    }
 }

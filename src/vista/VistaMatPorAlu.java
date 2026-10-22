@@ -187,6 +187,12 @@ public class VistaMatPorAlu extends javax.swing.JInternalFrame {
     private void btnGuardarNotaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarNotaActionPerformed
         // TODO add your handling code here:
         int fila = tblMateriasActivas.getSelectedRow();
+        
+        if (fila == -1) {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar y actualizar una nota.", "Atención", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
         Year anio = Year.of(Integer.parseInt(tblMateriasActivas.getValueAt(fila, 4).toString()));
         double nota = Double.parseDouble(tblMateriasActivas.getValueAt(fila, 3).toString());
         int idMateria = Integer.parseInt(tblMateriasActivas.getValueAt(fila, 0).toString());
